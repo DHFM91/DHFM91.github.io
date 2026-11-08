@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>David Feuling — DHF Media</title>
+<meta name="description" content="Games, stories, books and art by David Feuling (DHF Media).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0d0c;
+    --panel: #181614;
+    --panel-hover: #211e1b;
+    --line: #2e2a26;
+    --text: #ece6dc;
+    --muted: #9a9187;
+    --accent: #d9a441;
+    --accent-2: #b5452f;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.55 Inter, system-ui, sans-serif;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+
+  header.hero { padding: 72px 0 40px; border-bottom: 1px solid var(--line); }
+  .kicker { color: var(--accent); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 12px; }
+  h1 {
+    font-family: Fraunces, Georgia, serif;
+    font-size: clamp(40px, 8vw, 76px);
+    line-height: 1.02;
+    margin: 10px 0 16px;
+    font-weight: 700;
+  }
+  .lede { color: var(--muted); max-width: 640px; font-size: 18px; margin: 0; }
+  nav.jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  nav.jump a {
+    text-decoration: none; font-size: 14px; font-weight: 500;
+    padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px;
+    color: var(--muted); transition: color .15s, border-color .15s;
+  }
+  nav.jump a:hover { color: var(--text); border-color: var(--accent); }
+
+  section { padding: 48px 0 8px; }
+  section h2 {
+    font-family: Fraunces, Georgia, serif;
+    font-size: 30px; margin: 0 0 6px; font-weight: 700;
+  }
+  section .sub { color: var(--muted); margin: 0 0 22px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .card {
+    display: flex; flex-direction: column;
+    background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px; text-decoration: none; min-height: 150px;
+    transition: background .15s, border-color .15s, transform .15s;
+  }
+  a.card:hover { background: var(--panel-hover); border-color: var(--accent); transform: translateY(-2px); }
+  .card h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
+  .card p { margin: 0; color: var(--muted); font-size: 14.5px; flex: 1; }
+  .card .go { margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--accent); }
+  .card.static .go { color: var(--muted); font-weight: 500; }
+  .tag {
+    align-self: flex-start; font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent-2); margin-bottom: 10px;
+  }
+
+  footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
+
+  @media (max-width: 520px) {
+    header.hero { padding-top: 48px; }
+    .lede { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">DHF Media</div>
+    <h1>David Feuling</h1>
+    <p class="lede">Horror and dark-fantasy writer, author of “The Thing That Stalks the Fields,” and maker of small browser games. Everything public I've made, in one place.</p>
+    <nav class="jump" id="jump"></nav>
+  </div>
+</header>
+
+<main class="wrap" id="sections"></main>
+
+<footer>
+  <div class="wrap">© <span id="year"></span> David Feuling · DHF Media</div>
+</footer>
+
+<script>
+/* =====================================================================
+   EDIT EVERYTHING ON THIS PAGE RIGHT HERE.
+   To add something: copy one { ... } line, paste it into the right
+   section, and change the words. Leave link as "" if there's no link.
+   ===================================================================== */
+const SECTIONS = [
+  {
+    id: "games",
+    title: "Games",
+    sub: "Free to play in your browser, on desktop or phone.",
+    items: [
+      { title: "Zippy", tag: "Arcade", link: "https://dhfm91.github.io/zippy/",
+        text: "A remake of a game I wrote in BASIC in 1999. Dodge the angry balls, grab pellets, survive the storm." },
+      { title: "Freddy Flames", tag: "Arcade", link: "https://dhfm91.github.io/freddy-flames/",
+        text: "Recreation of a lost 1983 arcade game coded by my father, Lee Feuling." },
+      { title: "Lift Protocol", tag: "Action", link: "https://dhfm91.github.io/lift-protocol/",
+        text: "An Elevator Action–style spy game with a funk soul." },
+      { title: "QUACK", tag: "Shooter", link: "https://dhfm91.github.io/quack/",
+        text: "Old-school FPS where every enemy is a duck and your only weapon is bread." },
+      { title: "Bunker Buster", tag: "Shooter", link: "https://dhfm91.github.io/bunker-buster/",
+        text: "Speedrun-style first-person shooter. Get in, blow it up, get out fast." },
+      { title: "Skyline Snackers", tag: "Arcade", link: "https://dhfm91.github.io/skyline-snackers/",
+        text: "Monster parody of the giant-monster city smashers. Play as Cthulhu, Slenderman or a langolier." },
+      { title: "Grain & Ember", tag: "Sandbox", link: "https://dhfm91.github.io/grain-and-ember/",
+        text: "Falling-sand toy: paint earth, sand, water, oil and fire and watch them interact." },
+    ]
+  },
+  {
+    id: "writing",
+    title: "Writing",
+    sub: "Short fiction, serials and the newsletter.",
+    items: [
+      { title: "DHF Media on Substack", tag: "Newsletter", link: "https://dhfmedia.substack.com",
+        text: "Daily Inspiration, Doodles to Keep Art Human, and whatever else I'm working on." },
+      { title: "The Thing That Stalks the Fields", tag: "Short story", link: "",
+        text: "An internet horror classic from 2010, translated and adapted many times over." },
+      { title: "Buyer Beware", tag: "Series", link: "",
+        text: "Deep web horror series." },
+      { title: "Story of a Mother's Love", tag: "Short story", link: "",
+        text: "" },
+    ]
+  },
+  {
+    id: "books",
+    title: "Books",
+    sub: "Self-published, 2017–2022.",
+    items: [
+      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol. 1", tag: "Collection", link: "", text: "" },
+      { title: "All My Worst Ideas Are Transfixed in Art", tag: "Collection", link: "", text: "Nightmare Sampler, Vol. 2." },
+      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol. 3", tag: "Collection", link: "", text: "" },
+      { title: "The American Demon Waltz", tag: "Omnibus", link: "", text: "The Bravo Juliet omnibus edition." },
+      { title: "Bravo Juliet", tag: "Book", link: "", text: "" },
+      { title: "Witness to Those Waiting", tag: "Book", link: "", text: "" },
+      { title: "Vechnaya L'Vitsa", tag: "Book", link: "", text: "" },
+      { title: "OCKDaRA: The Recurring Trait", tag: "Book", link: "", text: "" },
+      { title: "The Lossy Incident", tag: "Book", link: "", text: "" },
+      { title: "The Three Edge Game", tag: "Book", link: "", text: "" },
+    ]
+  },
+  {
+    id: "elsewhere",
+    title: "Elsewhere",
+    sub: "Art, streams and socials.",
+    items: [
+      { title: "Doodles to Keep Art Human", tag: "Art", link: "https://dhfmedia.substack.com",
+        text: "Hand-drawn doodles, numbered and posted to Substack, X and Cara." },
+      { title: "GitHub", tag: "Code", link: "https://github.com/DHFM91",
+        text: "Source code for all the games above." },
+      // Add X, Cara, YouTube/Twitch, Amazon author page etc. like this:
+      // { title: "Cara", tag: "Art", link: "https://cara.app/YOURNAME", text: "Portfolio." },
+    ]
+  },
+];
+/* ===================== nothing below needs editing ===================== */
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const jump = document.getElementById("jump");
+const main = document.getElementById("sections");
+
+// GitHub-only view: dhfm91.github.io/?view=github shows just the games + GitHub link
+const GITHUB_VIEW = new URLSearchParams(location.search).get("view") === "github";
+let shown = SECTIONS;
+if (GITHUB_VIEW) {
+  document.title = "David Feuling — GitHub Portfolio";
+  document.querySelector(".kicker").textContent = "GitHub Portfolio";
+  document.querySelector(".lede").textContent = "Browser games I've built and published on GitHub. All free to play on desktop or phone.";
+  const ghCard = SECTIONS.flatMap(s => s.items).filter(i => i.title === "GitHub");
+  shown = SECTIONS.filter(s => s.id === "games")
+    .map(s => ({ ...s, items: [...s.items, ...ghCard] }));
+}
+
+for (const sec of shown) {
+  if (!sec.items.length) continue;
+  jump.insertAdjacentHTML("beforeend", `<a href="#${sec.id}">${esc(sec.title)}</a>`);
+  const cards = sec.items.map(it => {
+    const inner = `
+      ${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}
+      <h3>${esc(it.title)}</h3>
+      <p>${esc(it.text || "")}</p>
+      <span class="go">${it.link ? "Open →" : ""}</span>`;
+    return it.link
+      ? `<a class="card" href="${esc(it.link)}" target="_blank" rel="noopener">${inner}</a>`
+      : `<div class="card static">${inner}</div>`;
+  }).join("");
+  main.insertAdjacentHTML("beforeend", `
+    <section id="${sec.id}">
+      <h2>${esc(sec.title)}</h2>
+      ${sec.sub ? `<p class="sub">${esc(sec.sub)}</p>` : ""}
+      <div class="grid">${cards}</div>
+    </section>`);
+}
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
