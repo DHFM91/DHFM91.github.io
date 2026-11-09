@@ -2,7 +2,7 @@
 
 Splash page for everything public by David Feuling (DHF Media).
 
-Live at **https://dhfm91.github.io**
+Live at **https://davidfeuling.com**
 
 ## Adding or changing something
 

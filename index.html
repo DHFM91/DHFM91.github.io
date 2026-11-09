@@ -72,6 +72,16 @@
     text-transform: uppercase; color: var(--accent-2); margin-bottom: 10px;
   }
 
+  .construction {
+    background: repeating-linear-gradient(-45deg, #d9a441 0 14px, #1a1714 14px 28px);
+    padding: 4px 0;
+  }
+  .construction div {
+    background: var(--bg); color: var(--text); text-align: center;
+    font-size: 14px; font-weight: 500; padding: 9px 16px;
+  }
+  .construction span { color: var(--accent); font-weight: 600; }
+
   footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
 
   @media (max-width: 520px) {
@@ -81,6 +91,8 @@
 </style>
 </head>
 <body>
+
+<div class="construction" role="status"><div><span>🚧 Under construction</span> — still building this place out. Pardon the dust!</div></div>
 
 <header class="hero">
   <div class="wrap">
@@ -109,19 +121,19 @@ const SECTIONS = [
     title: "Games",
     sub: "Free to play in your browser, on desktop or phone.",
     items: [
-      { title: "Zippy", tag: "Arcade", link: "https://dhfm91.github.io/zippy/",
+      { title: "Zippy", tag: "Arcade", link: "/zippy/",
         text: "A remake of a game I wrote in BASIC in 1999. Dodge the angry balls, grab pellets, survive the storm." },
-      { title: "Freddy Flames", tag: "Arcade", link: "https://dhfm91.github.io/freddy-flames/",
+      { title: "Freddy Flames", tag: "Arcade", link: "/freddy-flames/",
         text: "Recreation of a lost 1983 arcade game coded by my father, Lee Feuling." },
-      { title: "Lift Protocol", tag: "Action", link: "https://dhfm91.github.io/lift-protocol/",
+      { title: "Lift Protocol", tag: "Action", link: "/lift-protocol/",
         text: "An Elevator Action–style spy game with a funk soul." },
-      { title: "QUACK", tag: "Shooter", link: "https://dhfm91.github.io/quack/",
+      { title: "QUACK", tag: "Shooter", link: "/quack/",
         text: "Old-school FPS where every enemy is a duck and your only weapon is bread." },
-      { title: "Bunker Buster", tag: "Shooter", link: "https://dhfm91.github.io/bunker-buster/",
+      { title: "Bunker Buster", tag: "Shooter", link: "/bunker-buster/",
         text: "Speedrun-style first-person shooter. Get in, blow it up, get out fast." },
-      { title: "Skyline Snackers", tag: "Arcade", link: "https://dhfm91.github.io/skyline-snackers/",
+      { title: "Skyline Snackers", tag: "Arcade", link: "/skyline-snackers/",
         text: "Monster parody of the giant-monster city smashers. Play as Cthulhu, Slenderman or a langolier." },
-      { title: "Grain & Ember", tag: "Sandbox", link: "https://dhfm91.github.io/grain-and-ember/",
+      { title: "Grain & Ember", tag: "Sandbox", link: "/grain-and-ember/",
         text: "Falling-sand toy: paint earth, sand, water, oil and fire and watch them interact." },
     ]
   },
