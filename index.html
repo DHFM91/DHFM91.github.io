@@ -63,6 +63,8 @@
     transition: background .15s, border-color .15s, transform .15s;
   }
   a.card:hover { background: var(--panel-hover); border-color: var(--accent); transform: translateY(-2px); }
+  h1, h2, .card h3, .lede, .credits-contact, .credits-kdp { text-wrap: balance; }
+  .card p { text-wrap: pretty; }
   .card h3 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
   .card p { margin: 0; color: var(--muted); font-size: 14.5px; flex: 1; }
   .card .go { margin-top: 14px; font-size: 13px; font-weight: 600; color: var(--accent); }
@@ -82,6 +84,22 @@
   }
   .construction span { color: var(--accent); font-weight: 600; }
 
+  section.credits { padding-top: 56px; }
+  .credits h2 { text-align: center; }
+  .credits-list {
+    columns: 2; column-gap: 40px;
+    max-width: 760px; margin: 18px auto 28px; padding: 0 0 0 1.2em;
+    color: var(--muted);
+  }
+  .credits-list li { break-inside: avoid; margin-bottom: 10px; line-height: 1.45; }
+  .credits-list li::marker { color: var(--accent-2); }
+  .credits a { color: var(--accent); text-decoration: none; }
+  .credits a:hover { text-decoration: underline; }
+  .credits-contact, .credits-kdp { text-align: center; margin: 10px auto; max-width: 560px; }
+  .credits-kdp { color: var(--muted); }
+  .credits-kdp a { word-break: break-all; }
+  @media (max-width: 560px) { .credits-list { columns: 1; } }
+
   footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
 
   @media (max-width: 520px) {
@@ -98,12 +116,35 @@
   <div class="wrap">
     <div class="kicker">DHF Media</div>
     <h1>David Feuling</h1>
-    <p class="lede">Horror and dark-fantasy writer, author of “The Thing That Stalks the Fields,” and maker of small browser games. Everything public I've made, in one place.</p>
+    <p class="lede">Horror and dark-fantasy writer, author of “The Thing That Stalks the Fields,” and designer of small browser games.</p>
     <nav class="jump" id="jump"></nav>
   </div>
 </header>
 
-<main class="wrap" id="sections"></main>
+<main class="wrap">
+  <div id="sections"></div>
+
+  <section class="credits" id="credits">
+    <h2>Portfolio Credits</h2>
+    <ul class="credits-list">
+      <li>The &ldquo;Simply Scary&rdquo; Podcast Network, hosted by Chilling Entertainment</li>
+      <li>Kehuan Shijie (Science Fiction World)</li>
+      <li>HorrorConVR 2021 &mdash; Author Guest Panelist</li>
+      <li>IMDb Writing Credit, 2016 Short Film</li>
+      <li>Third-Party Anthologies and Community Author Projects</li>
+      <li>Reddit&rsquo;s r/nosleep Community</li>
+      <li>UK Horror Scene</li>
+      <li>Creepypasta.com</li>
+      <li><a href="https://www.youtube.com/@DFHackRD" target="_blank" rel="noopener">YouTube</a></li>
+      <li>Amazon&rsquo;s Kindle Direct Publishing</li>
+    </ul>
+    <p class="credits-contact">Contact me at: <a href="mailto:dhf91@proton.me">dhf91@proton.me</a></p>
+    <p class="credits-kdp">
+      If you have Kindle Unlimited you can read some of my books for free!<br>
+      <a href="https://www.amazon.com/David-Feuling/e/B07B3MNLWB" target="_blank" rel="noopener">amazon.com/David-Feuling/e/B07B3MNLWB</a>
+    </p>
+  </section>
+</main>
 
 <footer>
   <div class="wrap">© <span id="year"></span> David Feuling · DHF Media</div>
@@ -138,28 +179,13 @@ const SECTIONS = [
     ]
   },
   {
-    id: "writing",
-    title: "Writing",
-    sub: "Short fiction, serials and the newsletter.",
-    items: [
-      { title: "DHF Media on Substack", tag: "Newsletter", link: "https://dhfmedia.substack.com",
-        text: "Daily Inspiration, Doodles to Keep Art Human, and whatever else I'm working on." },
-      { title: "The Thing That Stalks the Fields", tag: "Short story", link: "",
-        text: "An internet horror classic from 2010, translated and adapted many times over." },
-      { title: "Buyer Beware", tag: "Series", link: "",
-        text: "Deep web horror series." },
-      { title: "Story of a Mother's Love", tag: "Short story", link: "",
-        text: "" },
-    ]
-  },
-  {
     id: "books",
     title: "Books",
     sub: "Self-published, 2017–2022.",
     items: [
-      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol. 1", tag: "Collection", link: "", text: "" },
-      { title: "All My Worst Ideas Are Transfixed in Art", tag: "Collection", link: "", text: "Nightmare Sampler, Vol. 2." },
-      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol. 3", tag: "Collection", link: "", text: "" },
+      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol.\u00a01", tag: "Collection", link: "", text: "" },
+      { title: "All My Worst Ideas Are Transfixed in Art", tag: "Collection", link: "", text: "Nightmare Sampler, Vol.\u00a02." },
+      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol.\u00a03", tag: "Collection", link: "", text: "" },
       { title: "The American Demon Waltz", tag: "Omnibus", link: "", text: "The Bravo Juliet omnibus edition." },
       { title: "Bravo Juliet", tag: "Book", link: "", text: "" },
       { title: "Witness to Those Waiting", tag: "Book", link: "", text: "" },
@@ -167,19 +193,6 @@ const SECTIONS = [
       { title: "OCKDaRA: The Recurring Trait", tag: "Book", link: "", text: "" },
       { title: "The Lossy Incident", tag: "Book", link: "", text: "" },
       { title: "The Three Edge Game", tag: "Book", link: "", text: "" },
-    ]
-  },
-  {
-    id: "elsewhere",
-    title: "Elsewhere",
-    sub: "Art, streams and socials.",
-    items: [
-      { title: "Doodles to Keep Art Human", tag: "Art", link: "https://dhfmedia.substack.com",
-        text: "Hand-drawn doodles, numbered and posted to Substack, X and Cara." },
-      { title: "GitHub", tag: "Code", link: "https://github.com/DHFM91",
-        text: "Source code for all the games above." },
-      // Add X, Cara, YouTube/Twitch, Amazon author page etc. like this:
-      // { title: "Cara", tag: "Art", link: "https://cara.app/YOURNAME", text: "Portfolio." },
     ]
   },
 ];
@@ -196,7 +209,8 @@ if (GITHUB_VIEW) {
   document.title = "David Feuling — GitHub Portfolio";
   document.querySelector(".kicker").textContent = "GitHub Portfolio";
   document.querySelector(".lede").textContent = "Browser games I've built and published on GitHub. All free to play on desktop or phone.";
-  const ghCard = SECTIONS.flatMap(s => s.items).filter(i => i.title === "GitHub");
+  const ghCard = [{ title: "GitHub", tag: "Code", link: "https://github.com/DHFM91", text: "Source code for all the games above." }];
+  document.getElementById("credits").remove();
   shown = SECTIONS.filter(s => s.id === "games")
     .map(s => ({ ...s, items: [...s.items, ...ghCard] }));
 }
@@ -221,6 +235,7 @@ for (const sec of shown) {
       <div class="grid">${cards}</div>
     </section>`);
 }
+if (!GITHUB_VIEW) jump.insertAdjacentHTML("beforeend", `<a href="#credits">Credits &amp; Contact</a>`);
 document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 </body>
