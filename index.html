@@ -64,15 +64,17 @@
   details.support { margin-top: 18px; max-width: 720px; }
   details.support[hidden] { display: none; }
   details.support summary {
-    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
-    list-style: none; font-size: 14px; font-weight: 500; color: var(--accent);
-    padding: 7px 14px; border: 1px dashed var(--stripe); border-radius: 999px;
-    background: rgba(255,255,255,.6); user-select: none;
+    display: inline-flex; align-items: center; gap: 9px; cursor: pointer;
+    list-style: none; font-size: 15.5px; font-weight: 600; color: #fff;
+    padding: 10px 20px; border: 0; border-radius: 999px;
+    background: var(--accent); user-select: none;
+    box-shadow: 0 0 0 4px rgba(106,76,156,.16), 0 6px 16px rgba(60,40,90,.18);
+    transition: transform .15s, box-shadow .15s, filter .15s;
   }
   details.support summary::-webkit-details-marker { display: none; }
   details.support summary::after { content: "▾"; font-size: 12px; transition: transform .15s; }
   details.support[open] summary::after { transform: rotate(180deg); }
-  details.support summary:hover { border-style: solid; }
+  details.support summary:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 0 0 5px rgba(106,76,156,.22), 0 8px 20px rgba(60,40,90,.22); }
   details.support summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .coins { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin-top: 12px; }
   .coin {
@@ -175,7 +177,7 @@
     <p class="lede">Horror, sci-fi, essay and dark-fantasy novelist, author of classic short horror fiction, and designer of small browser games.<br>I vibecode only to learn the tools of my enemy. All published books contain no AI-generated text or illustration.</p>
     <nav class="jump" id="jump"></nav>
     <details class="support" id="support" hidden>
-      <summary>Support my work with crypto</summary>
+      <summary><span aria-hidden="true">♥</span> Support my work with crypto</summary>
       <div class="coins" id="coins"></div>
     </details>
     </div>
@@ -228,13 +230,13 @@ const SECTIONS = [
       { title: "Freddy Flames", tag: "Arcade", link: "/freddy-flames/",
         text: "Recreation of a lost 1983 arcade game coded by my father, Lee Feuling." },
       { title: "Lift Protocol", tag: "Action", link: "/lift-protocol/",
-        text: "An Elevator Action–style spy game with a funk soul." },
+        text: "An Elevator Action–style spy game with a 70s feel." },
       { title: "QUACK", tag: "Shooter", link: "/quack/",
         text: "Old-school FPS where every enemy is a duck and your only weapon is bread." },
       { title: "Bunker Buster", tag: "Shooter", link: "/bunker-buster/",
         text: "Speedrun-style first-person shooter. Get in, blow it up, get out fast." },
       { title: "Skyline Snackers", tag: "Arcade", link: "/skyline-snackers/",
-        text: "Monster parody of the giant-monster city smashers. Play as Cthulhu, Slenderman or a langolier." },
+        text: "Monster parody of the giant-monster city smashers. Play as Cthulhu, Lanky Hank or Chronomunch." },
       { title: "Grain & Ember", tag: "Sandbox", link: "/grain-and-ember/",
         text: "Falling-sand toy: paint earth, sand, water, oil and fire and watch them interact." },
     ]
