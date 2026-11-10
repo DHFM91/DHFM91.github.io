@@ -31,6 +31,14 @@
   .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
 
   header.hero { padding: 72px 0 40px; border-bottom: 1px solid var(--line); }
+  .hero-grid { display: flex; align-items: center; gap: 44px; }
+  .hero-text { flex: 1; min-width: 0; }
+  .portrait {
+    order: 2; flex: none;
+    width: 230px; height: 230px; border-radius: 50%; object-fit: cover;
+    border: 3px solid var(--line);
+    box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px rgba(217,164,65,.35);
+  }
   .kicker { color: var(--accent); font-weight: 600; letter-spacing: .14em; text-transform: uppercase; font-size: 12px; }
   h1 {
     font-family: Fraunces, Georgia, serif;
@@ -102,8 +110,12 @@
 
   footer { border-top: 1px solid var(--line); margin-top: 56px; padding: 28px 0 48px; color: var(--muted); font-size: 14px; }
 
+  @media (max-width: 720px) {
+    .hero-grid { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .portrait { order: 0; width: 132px; height: 132px; margin-left: 7px; }
+  }
   @media (max-width: 520px) {
-    header.hero { padding-top: 48px; }
+    header.hero { padding-top: 40px; }
     .lede { font-size: 16px; }
   }
 </style>
@@ -113,11 +125,14 @@
 <div class="construction" role="status"><div><span>🚧 Under construction</span> — still building this place out. Pardon the dust!</div></div>
 
 <header class="hero">
-  <div class="wrap">
+  <div class="wrap hero-grid">
+    <img class="portrait" src="david-feuling.jpg" width="480" height="480" alt="Portrait of David Feuling">
+    <div class="hero-text">
     <div class="kicker">DHF Media</div>
     <h1>David Feuling</h1>
-    <p class="lede">Horror and dark-fantasy writer, author of “The Thing That Stalks the Fields,” and designer of small browser games.</p>
+    <p class="lede">Horror, sci-fi, essay and dark-fantasy writer, author of “The Thing That Stalks the Fields,” and designer of small browser games.</p>
     <nav class="jump" id="jump"></nav>
+    </div>
   </div>
 </header>
 
@@ -183,16 +198,17 @@ const SECTIONS = [
     title: "Books",
     sub: "Self-published, 2017–2022.",
     items: [
-      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol.\u00a01", tag: "Collection", link: "", text: "" },
-      { title: "All My Worst Ideas Are Transfixed in Art", tag: "Collection", link: "", text: "Nightmare Sampler, Vol.\u00a02." },
-      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol.\u00a03", tag: "Collection", link: "", text: "" },
-      { title: "The American Demon Waltz", tag: "Omnibus", link: "", text: "The Bravo Juliet omnibus edition." },
-      { title: "Bravo Juliet", tag: "Book", link: "", text: "" },
-      { title: "Witness to Those Waiting", tag: "Book", link: "", text: "" },
-      { title: "Vechnaya L'Vitsa", tag: "Book", link: "", text: "" },
-      { title: "OCKDaRA: The Recurring Trait", tag: "Book", link: "", text: "" },
-      { title: "The Lossy Incident", tag: "Book", link: "", text: "" },
-      { title: "The Three Edge Game", tag: "Book", link: "", text: "" },
+      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol.\u00a01", tag: "Collection", link: "https://www.amazon.com/dp/B073V9ZK53", text: "" },
+      { title: "All My Worst Ideas Are Transfixed in Art", tag: "Collection", link: "https://www.amazon.com/dp/B07SYFY6C8", text: "Nightmare Sampler, Vol.\u00a02." },
+      { title: "DFeul's Secret Recipe Nightmare Sampler, Vol.\u00a03", tag: "Collection", link: "https://www.amazon.com/dp/B08NTVDQL2", text: "" },
+      { title: "The American Demon Waltz", tag: "Omnibus", link: "https://www.amazon.com/dp/B09JDFFH1J", text: "The Bravo Juliet omnibus edition." },
+      { title: "Modern Dread", tag: "Collection", link: "https://www.amazon.com/dp/B07YS3XLMX", text: "Neurohorror." },
+      { title: "Bravo Juliet", tag: "Book", link: "https://www.amazon.com/David-Feuling/e/B07B3MNLWB", text: "" },
+      { title: "Witness to Those Waiting", tag: "Book", link: "https://www.amazon.com/David-Feuling/e/B07B3MNLWB", text: "" },
+      { title: "Vechnaya L'Vitsa", tag: "Book", link: "https://www.amazon.com/David-Feuling/e/B07B3MNLWB", text: "" },
+      { title: "OCKDaRA: The Recurring Trait", tag: "Book", link: "https://www.amazon.com/David-Feuling/e/B07B3MNLWB", text: "" },
+      { title: "The Lossy Incident", tag: "Book", link: "https://www.amazon.com/David-Feuling/e/B07B3MNLWB", text: "" },
+      { title: "The Three Edge Game", tag: "Book", link: "https://www.amazon.com/dp/B0BQB41V42", text: "" },
     ]
   },
 ];
@@ -223,7 +239,7 @@ for (const sec of shown) {
       ${it.tag ? `<span class="tag">${esc(it.tag)}</span>` : ""}
       <h3>${esc(it.title)}</h3>
       <p>${esc(it.text || "")}</p>
-      <span class="go">${it.link ? "Open →" : ""}</span>`;
+      <span class="go">${it.link ? (it.link.includes("amazon.com") ? "View on Amazon →" : "Open →") : ""}</span>`;
     return it.link
       ? `<a class="card" href="${esc(it.link)}" target="_blank" rel="noopener">${inner}</a>`
       : `<div class="card static">${inner}</div>`;
