@@ -235,6 +235,15 @@ const SECTIONS = [
     ]
   },
   {
+    id: "utilities",
+    title: "Utilities",
+    sub: "Small, free tools for everyday use.",
+    items: [
+      { title: "Daylight", tag: "Start page", link: "/daylight/",
+        text: "A calm browser start page: clock, weather, air quality, and sun and moon times for any city." },
+    ]
+  },
+  {
     id: "books",
     title: "Books",
     sub: "Copyright 2008-2026",
@@ -268,17 +277,17 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">
 const jump = document.getElementById("jump");
 const main = document.getElementById("sections");
 
-// GitHub-only view: dhfm91.github.io/?view=github shows just the games + GitHub link
+// GitHub-only view: dhfm91.github.io/?view=github shows just the games, utilities + GitHub link
 const GITHUB_VIEW = new URLSearchParams(location.search).get("view") === "github";
 let shown = SECTIONS;
 if (GITHUB_VIEW) {
   document.title = "David Feuling — GitHub Portfolio";
   document.querySelector(".kicker").textContent = "GitHub Portfolio";
-  document.querySelector(".lede").textContent = "Browser games I've built and published on GitHub. All free to play on desktop or phone.";
-  const ghCard = [{ title: "GitHub", tag: "Code", link: "https://github.com/DHFM91", text: "Source code for all the games above." }];
+  document.querySelector(".lede").textContent = "Browser games and tools I've built and published on GitHub. All free to use on desktop or phone.";
+  const ghCard = [{ title: "GitHub", tag: "Code", link: "https://github.com/DHFM91", text: "Source code for all the projects above." }];
   document.getElementById("credits").remove();
-  shown = SECTIONS.filter(s => s.id === "games")
-    .map(s => ({ ...s, items: [...s.items, ...ghCard] }));
+  shown = SECTIONS.filter(s => s.id === "games" || s.id === "utilities")
+    .map((s, i, arr) => i === arr.length - 1 ? { ...s, items: [...s.items, ...ghCard] } : s);
 }
 
 for (const sec of shown) {
