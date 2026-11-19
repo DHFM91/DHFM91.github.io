@@ -59,12 +59,27 @@
   // ---- ttttt report (main page only) ----
   if (slugOf(location.pathname) !== "home") return;
 
+  // The free counter service refuses big bursts ("429 Too Many Requests"),
+  // so lookups go out a few at a time, each one gives up after a few seconds,
+  // and refused ones wait and retry. 404 = that counter was never hit = 0.
+  // Anything that still fails comes back null (a blank cell), never a fake 0.
+  const CONCURRENCY = 4, TIMEOUT_MS = 8000, RETRIES = 3;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
   const getCount = async k => {
-    try {
-      const r = await fetch(`${API}/get/${NS}/${k}`);
-      if (!r.ok) return 0;
-      return (await r.json()).value || 0;
-    } catch { return null; }
+    for (let attempt = 0; attempt <= RETRIES; attempt++) {
+      const ctl = new AbortController();
+      const timer = setTimeout(() => ctl.abort(), TIMEOUT_MS);
+      try {
+        const r = await fetch(`${API}/get/${NS}/${k}`, { signal: ctl.signal });
+        if (r.status === 404) return 0;
+        if (r.ok) return (await r.json()).value || 0;
+        if (r.status !== 429 && r.status < 500) return null;
+      } catch {
+        // timed out or network error: fall through and retry
+      } finally { clearTimeout(timer); }
+      if (attempt < RETRIES) await sleep(1000 * 2 ** attempt + Math.random() * 500);
+    }
+    return null;
   };
 
   const pages = () => {
@@ -78,7 +93,7 @@
 
   const COLS = ["Today", "Yesterday", "This week", "Last week", "This month", "Last month", "Lifetime"];
 
-  const gather = async () => {
+  const gather = async (onProgress = () => {}) => {
     const t = nyDate(), yd = shift(t, -1), lw = shift(t, -7);
     const lm = t.m === 1 ? { y: t.y - 1, m: 12, d: 1 } : { y: t.y, m: t.m - 1, d: 1 };
     const periods = [dayKey(t), dayKey(yd), weekKey(t), weekKey(lw), monthKey(t), monthKey(lm), "all"];
@@ -86,11 +101,17 @@
     const jobs = [];
     for (const s of list) for (const p of periods) jobs.push(key(s, p));
     const vals = {};
-    for (let i = 0; i < jobs.length; i += 24) {
-      const batch = jobs.slice(i, i + 24);
-      const got = await Promise.all(batch.map(getCount));
-      batch.forEach((k, j) => (vals[k] = got[j]));
-    }
+    let next = 0, done = 0;
+    onProgress(0, jobs.length);
+    const worker = async () => {
+      while (next < jobs.length) {
+        const k = jobs[next++];
+        vals[k] = await getCount(k);
+        onProgress(++done, jobs.length);
+        await sleep(150);
+      }
+    };
+    await Promise.all(Array.from({ length: CONCURRENCY }, worker));
     const rows = list.map(s => [s, ...periods.map(p => vals[key(s, p)])]);
     const wk = isoWeek(t);
     return { t, wk, rows, failed: rows.some(r => r.includes(null)) };
@@ -222,9 +243,21 @@
     note.style.cssText = "position:fixed;right:12px;bottom:12px;z-index:9999;padding:8px 12px;border-radius:8px;" +
       "background:#26222b;color:#fff;font:13px system-ui,sans-serif;opacity:.9";
     document.body.append(note);
+    let keepNote = false;
     try {
       const t = nyDate();
-      download(buildXlsx(await gather()), `davidfeuling-visits-${t.y}-${pad(t.m)}-${pad(t.d)}.xlsx`);
-    } finally { busy = false; note.remove(); }
+      const data = await gather((d, n) => { note.textContent = `Preparing visit report… ${d}/${n}`; });
+      download(buildXlsx(data), `davidfeuling-visits-${t.y}-${pad(t.m)}-${pad(t.d)}.xlsx`);
+      if (data.failed) {
+        note.textContent = "Report downloaded, but the counter service skipped some cells (left blank). Try again in a few minutes.";
+        keepNote = true;
+      }
+    } catch (err) {
+      note.textContent = "Visit report failed: " + (err && err.message || err);
+      keepNote = true;
+    } finally {
+      busy = false;
+      if (keepNote) setTimeout(() => note.remove(), 8000); else note.remove();
+    }
   });
 })();
