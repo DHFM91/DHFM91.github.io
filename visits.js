@@ -26,10 +26,6 @@
     const y0 = new Date(Date.UTC(dt.getUTCFullYear(), 0, 1));
     return { y: dt.getUTCFullYear(), w: Math.ceil(((dt - y0) / 864e5 + 1) / 7) };
   };
-  const shift = ({ y, m, d }, days) => {
-    const dt = new Date(Date.UTC(y, m - 1, d + days));
-    return { y: dt.getUTCFullYear(), m: dt.getUTCMonth() + 1, d: dt.getUTCDate() };
-  };
   const dayKey = t => `d${t.y}${pad(t.m)}${pad(t.d)}`;
   const weekKey = t => { const w = isoWeek(t); return `w${w.y}${pad(w.w)}`; };
   const monthKey = t => `m${t.y}${pad(t.m)}`;
@@ -91,12 +87,11 @@
     return [...set];
   };
 
-  const COLS = ["Today", "Yesterday", "This week", "Last week", "This month", "Last month", "Lifetime"];
+  const COLS = ["Today", "This week", "This month", "Lifetime"];
 
   const gather = async (onProgress = () => {}) => {
-    const t = nyDate(), yd = shift(t, -1), lw = shift(t, -7);
-    const lm = t.m === 1 ? { y: t.y - 1, m: 12, d: 1 } : { y: t.y, m: t.m - 1, d: 1 };
-    const periods = [dayKey(t), dayKey(yd), weekKey(t), weekKey(lw), monthKey(t), monthKey(lm), "all"];
+    const t = nyDate();
+    const periods = [dayKey(t), weekKey(t), monthKey(t), "all"];
     const list = pages();
     const jobs = [];
     for (const s of list) for (const p of periods) jobs.push(key(s, p));
@@ -171,11 +166,11 @@
     const sheet = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
 <sheetViews><sheetView workbookViewId="0"><pane ySplit="${HEAD}" topLeftCell="A${first}" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>
-<cols><col min="1" max="1" width="24" customWidth="1"/><col min="2" max="8" width="12" customWidth="1"/></cols>
+<cols><col min="1" max="1" width="24" customWidth="1"/><col min="2" max="5" width="12" customWidth="1"/></cols>
 <sheetData>${sheetRows}</sheetData><drawing r:id="rId1"/></worksheet>`;
 
     // chart: horizontal bars of This week / This month / Lifetime per page
-    const series = [[3, "This week", "8FB8DE"], [5, "This month", "4A7FB0"], [7, "Lifetime", "26425E"]];
+    const series = [[2, "This week", "8FB8DE"], [3, "This month", "4A7FB0"], [4, "Lifetime", "26425E"]];
     const cat = `<c:cat><c:strRef><c:f>Visits!$A$${first}:$A$${last}</c:f><c:strCache><c:ptCount val="${rows.length}"/>${rows.map((r, i) => `<c:pt idx="${i}"><c:v>${xmlEsc(r[0])}</c:v></c:pt>`).join("")}</c:strCache></c:strRef></c:cat>`;
     const ser = series.map(([c, name, color], i) => `<c:ser><c:idx val="${i}"/><c:order val="${i}"/>
 <c:tx><c:strRef><c:f>Visits!$${colL(c)}$${HEAD}</c:f><c:strCache><c:ptCount val="1"/><c:pt idx="0"><c:v>${name}</c:v></c:pt></c:strCache></c:strRef></c:tx>
@@ -191,8 +186,8 @@
 </c:plotArea><c:legend><c:legendPos val="b"/><c:overlay val="0"/></c:legend><c:plotVisOnly val="1"/><c:dispBlanksAs val="gap"/></c:chart></c:chartSpace>`;
     const drawing = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart">
-<xdr:twoCellAnchor><xdr:from><xdr:col>9</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${HEAD - 1}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from>
-<xdr:to><xdr:col>19</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${Math.max(HEAD + 22, tot + 2)}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>
+<xdr:twoCellAnchor><xdr:from><xdr:col>6</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${HEAD - 1}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:from>
+<xdr:to><xdr:col>16</xdr:col><xdr:colOff>0</xdr:colOff><xdr:row>${Math.max(HEAD + 22, tot + 2)}</xdr:row><xdr:rowOff>0</xdr:rowOff></xdr:to>
 <xdr:graphicFrame macro=""><xdr:nvGraphicFramePr><xdr:cNvPr id="2" name="Visits chart"/><xdr:cNvGraphicFramePr/></xdr:nvGraphicFramePr>
 <xdr:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/></xdr:xfrm><a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart"><c:chart r:id="rId1"/></a:graphicData></a:graphic></xdr:graphicFrame><xdr:clientData/></xdr:twoCellAnchor></xdr:wsDr>`;
     const R = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
